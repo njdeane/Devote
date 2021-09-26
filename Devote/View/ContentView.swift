@@ -13,9 +13,7 @@ struct ContentView: View {
   // MARK: - PROPERTIES
   
   @State var task: String = ""
-  private var isButtonDisabled: Bool {
-    task.isEmpty
-  }
+  @State private var showNewTaskItem: Bool = false
   
   // Fetching data
   @Environment(\.managedObjectContext) private var viewContext
@@ -26,25 +24,7 @@ struct ContentView: View {
   private var items: FetchedResults<Item>
   
   // MARK: - FUNCTIONS
-  private func addItem() {
-    withAnimation {
-      let newItem = Item(context: viewContext)
-      newItem.timestamp = Date()
-      newItem.task = task
-      newItem.completion = false
-      newItem.id = UUID()
-      
-      do {
-        try viewContext.save()
-      } catch {
-        let nsError = error as NSError
-        fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-      }
-      
-      task = ""
-      hideKeyboard()
-    }
-  }
+ 
   
   private func deleteItems(offsets: IndexSet) {
     withAnimation {
@@ -63,30 +43,61 @@ struct ContentView: View {
   var body: some View {
     NavigationView {
       ZStack {
+        // main view
         VStack {
-          VStack(spacing: 16) {
-            TextField("New Task", text: $task)
-              .padding()
-              .background(
-                Color(UIColor.systemGray6)
-              )
-              .cornerRadius(10)
+          // header
+          HStack(spacing: 10) {
+            // title
+            Text("Devote")
+              .font(.system(.largeTitle, design: .rounded))
+              .fontWeight(.heavy)
+              .padding(.leading, 4)
+              
+            Spacer()
             
+            // edit button
+            EditButton()
+              .font(.system(size: 16, weight: .semibold, design: .rounded))
+              .padding(.horizontal, 10)
+              .frame(minWidth: 70, minHeight: 24)
+              .background(
+                Capsule().stroke(Color.white, lineWidth: 2)
+              )
+            
+            // appearance button
             Button(action: {
-              addItem()
+              //
             }, label: {
-              Spacer()
-              Text("Save")
-              Spacer()
+              Image(systemName: "moon.circle")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .font(.system(.title, design: .rounded))
             })
-            .disabled(isButtonDisabled) // this uses computed property.. remember this!
-            .padding()
-            .font(.headline)
-            .foregroundColor(.white)
-            .background(isButtonDisabled ? Color.gray : Color.pink)
-            .cornerRadius(10)
           }
           .padding()
+          .foregroundColor(.white)
+          
+          Spacer(minLength: 80)
+          
+          // new task button
+          Button(action: {
+            showNewTaskItem = true
+          }, label: {
+            Image(systemName: "plus.circle")
+              .font(.system(size: 30, weight: .semibold, design: .rounded))
+            Text("New Tast")
+              .font(.system(size: 24, weight: .bold, design: .rounded))
+          })
+          .foregroundColor(.white)
+          .padding(.horizontal, 20)
+          .padding(.vertical, 15)
+          .background(
+            LinearGradient(gradient: Gradient(colors: [Color.pink, Color.blue]), startPoint: .leading, endPoint: .trailing)
+              .clipShape(Capsule())
+              .shadow(color: Color(red: 0, green: 0, blue: 0, opacity: 0.25), radius: 8, x: 0, y: 4)
+          )
+          
+          // tasks
           
           List {
             ForEach(items) { item in
@@ -107,18 +118,21 @@ struct ContentView: View {
           .padding(.vertical, 0)
           .frame(maxWidth: 640)
         }
+        // new task item
+        if showNewTaskItem {
+          BlankView()
+            .onTapGesture {
+              withAnimation() {
+                showNewTaskItem = false
+              }
+            }
+          NewTaskItemView(isShowing: $showNewTaskItem)
+        }
       }
       .onAppear() {
         UITableView.appearance().backgroundColor = UIColor.clear
       }
-      .navigationBarTitle("Daily Tasks", displayMode: .large)
-      .toolbar {
-        #if os(iOS)
-        ToolbarItem(placement: .navigationBarTrailing) {
-          EditButton()
-        }
-        #endif
-      }
+      .navigationBarTitle("Daily Tasks", displayMode: .large).navigationBarHidden(true)
       .background(
         BackgroundImageView()
       )
