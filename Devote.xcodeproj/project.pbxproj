@@ -18,6 +18,7 @@
 		A60D438A26FEF97B00BEB162 /* sound-tap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A60D438726FEF97B00BEB162 /* sound-tap.mp3 */; };
 		A64E672926FFDF4000DE4D1A /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E672826FFDF4000DE4D1A /* Constant.swift */; };
 		A64E672B26FFE52700DE4D1A /* HideKeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E672A26FFE52700DE4D1A /* HideKeyboardExtension.swift */; };
+		A64E672D26FFE91000DE4D1A /* BackgroundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E672C26FFE91000DE4D1A /* BackgroundImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		A60D438726FEF97B00BEB162 /* sound-tap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "sound-tap.mp3"; sourceTree = "<group>"; };
 		A64E672826FFDF4000DE4D1A /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		A64E672A26FFE52700DE4D1A /* HideKeyboardExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyboardExtension.swift; sourceTree = "<group>"; };
+		A64E672C26FFE91000DE4D1A /* BackgroundImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				A60D437326FEF88700BEB162 /* ContentView.swift */,
+				A64E672C26FFE91000DE4D1A /* BackgroundImageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A60D437B26FEF88800BEB162 /* Persistence.swift in Sources */,
+				A64E672D26FFE91000DE4D1A /* BackgroundImageView.swift in Sources */,
 				A60D437426FEF88700BEB162 /* ContentView.swift in Sources */,
 				A64E672B26FFE52700DE4D1A /* HideKeyboardExtension.swift in Sources */,
 				A64E672926FFDF4000DE4D1A /* Constant.swift in Sources */,
