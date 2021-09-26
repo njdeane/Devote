@@ -12,6 +12,7 @@ struct ContentView: View {
   
   // MARK: - PROPERTIES
   
+  @AppStorage("isDarkMode") private var isDarkMode: Bool = false
   @State var task: String = ""
   @State private var showNewTaskItem: Bool = false
   
@@ -66,9 +67,9 @@ struct ContentView: View {
             
             // appearance button
             Button(action: {
-              //
+              isDarkMode.toggle()
             }, label: {
-              Image(systemName: "moon.circle")
+              Image(systemName: isDarkMode ? "moon.circle.fill" : "moon.circle")
                 .resizable()
                 .frame(width: 24, height: 24)
                 .font(.system(.title, design: .rounded))
@@ -101,15 +102,7 @@ struct ContentView: View {
           
           List {
             ForEach(items) { item in
-              VStack(alignment: .leading) {
-                Text(item.task ?? "")
-                  .font(.headline)
-                  .fontWeight(.bold)
-                
-                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                  .font(.footnote)
-                  .foregroundColor(.gray)
-              }
+             ListRowItemView(item: item)
             }
             .onDelete(perform: deleteItems)
           }
@@ -118,9 +111,14 @@ struct ContentView: View {
           .padding(.vertical, 0)
           .frame(maxWidth: 640)
         }
+        .blur(radius: showNewTaskItem ? 8.0 : 0, opaque: false)
+        .transition(.move(edge: .bottom))
+        .animation(.easeOut(duration: 0.5))
         // new task item
         if showNewTaskItem {
-          BlankView()
+          BlankView(
+            backgroundColor: isDarkMode ? Color.black : Color.gray,
+            backgroundOpacity: isDarkMode ? 0.3 : 0.5)
             .onTapGesture {
               withAnimation() {
                 showNewTaskItem = false
@@ -135,6 +133,7 @@ struct ContentView: View {
       .navigationBarTitle("Daily Tasks", displayMode: .large).navigationBarHidden(true)
       .background(
         BackgroundImageView()
+          .blur(radius: showNewTaskItem ? 8.0 : 0, opaque: false)
       )
       .background(
         backgroundGradient.ignoresSafeArea()
@@ -148,6 +147,6 @@ struct ContentView: View {
 // MARK: - PREVIEW
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)      
   }
 }
